@@ -1,5 +1,5 @@
 {
-    "editor.tabSize": 2,
-    "typescript.preferences.preferTypeOnlyAutoImports": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.tabSize": 2,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
