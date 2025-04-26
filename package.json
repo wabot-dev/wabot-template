@@ -5,6 +5,7 @@
   "scripts": {
     "start": "yts --watch --watch-path=src --watch-preserve-output ./src/run.ts",
     "fmt": "prettier --write .",
+    "tsc": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
