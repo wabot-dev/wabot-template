@@ -4,15 +4,16 @@
   "main": "index.js",
   "scripts": {
     "start": "yts --watch --watch-path=src --watch-preserve-output ./src/run.ts",
+    "fmt": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "0.0.6"
+    "@wabot-dev/framework": "0.0.8"
   },
   "devDependencies": {
-    "@yucacodes/ts": "^0.0.4"
+    "prettier": "^3.5.3"
   }
 }
