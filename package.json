@@ -2,6 +2,7 @@
   "name": "@wabot-dev/template",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "yts --import=./env.mjs --watch --watch-path=src --watch-preserve-output ./src/run.ts",
     "fmt": "prettier --write .",
