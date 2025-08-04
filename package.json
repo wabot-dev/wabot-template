@@ -13,7 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "^0.1.0-beta.1"
+    "@wabot-dev/framework": "^0.0.50"
   },
   "devDependencies": {
     "prettier": "^3.5.3"
