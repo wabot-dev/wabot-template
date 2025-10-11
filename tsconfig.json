@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "ESNext",
-    "target": "ES2022",
-    "moduleResolution": "Bundler",
+    "module": "esnext",
+    "target": "es2022",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "isolatedModules": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

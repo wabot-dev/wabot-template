@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "yts --import=./env.mjs --watch --watch-path=src --watch-preserve-output ./src/run.ts",
+    "dev": "yts --import=./env.mjs --watch --watch-path=src --watch-preserve-output ./src/run.ts",
     "build": "tsup src/run.ts --format esm --target es2022 --platform node --out-dir dist --clean --sourcemap && copy env.mjs dist\\",
     "start:prod": "node --import ./env.mjs dist/run.mjs",
     "fmt": "prettier --write .",
@@ -15,7 +15,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "^0.0.50"
+    "@wabot-dev/framework": "0.1.0-beta.73"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
