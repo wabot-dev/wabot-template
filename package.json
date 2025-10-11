@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "dev": "yts --import=./env.mjs --watch --watch-path=src --watch-preserve-output ./src/run.ts",
-    "build": "tsup src/run.ts --format esm --target es2022 --platform node --out-dir dist --clean --sourcemap && copy env.mjs dist\\",
-    "start:prod": "node --import ./env.mjs dist/run.mjs",
+ "scripts": {
+    "dev": "node --import=./env.mjs --import @yucacodes/ts/src/custom-import.mjs  ./src/run.ts",
+    "test": "node --import @yucacodes/ts/src/custom-import.mjs --test .//*.test.ts",
     "fmt": "prettier --write .",
-    "tsc": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "fmt:check": "prettier --check .",
+    "build": "tsup-node ./src/run.ts --format esm --clean --no-splitting --sourcemap",
+    "start": "node ./dist/run.js"
   },
   "author": "",
   "license": "ISC",
