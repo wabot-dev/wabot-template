@@ -1,30 +1,18 @@
 import {
-  ChatBotAdapter,
+  ChatAdapter,
   ChatRepository,
-  OpenaiChatBotAdapter,
-  RamChatRepository,
-  RamUserRepository,
-  runServer,
-  UserRepository,
+  container,
+  WabotChatAdapter,
+  PgChatRepository,
+  runChatControllers,
+  Env,
 } from '@wabot-dev/framework'
 import { MyController } from './controllers/MyController'
+import { Pool } from 'pg'
+const env = container.resolve(Env)
 
-runServer({
-  controllers: [MyController],
-  providers: [
-    {
-      replace: ChatRepository,
-      with: RamChatRepository,
-      singleton: true,
-    },
-    {
-      replace: UserRepository,
-      with: RamUserRepository,
-      singleton: true,
-    },
-    {
-      replace: ChatBotAdapter,
-      with: OpenaiChatBotAdapter,
-    },
-  ],
-})
+container.registerInstance(Pool, new Pool({ connectionString: env.requireString('DATABASE_URL') }))
+
+container.registerType(ChatAdapter, WabotChatAdapter)
+container.registerType(ChatRepository, PgChatRepository)
+runChatControllers([MyController])
