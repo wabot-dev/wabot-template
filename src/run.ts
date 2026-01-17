@@ -7,7 +7,7 @@ import {
   runChatControllers,
   Env,
 } from '@wabot-dev/framework'
-import { MyController } from './controllers/MyController'
+import { MyChatController } from './controllers/MyChatController'
 import { Pool } from 'pg'
 const env = container.resolve(Env)
 
@@ -15,4 +15,5 @@ container.registerInstance(Pool, new Pool({ connectionString: env.requireString(
 
 container.registerType(ChatAdapter, WabotChatAdapter)
 container.registerType(ChatRepository, PgChatRepository)
-runChatControllers([MyController])
+
+runChatControllers([MyChatController])
