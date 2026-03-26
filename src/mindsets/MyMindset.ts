@@ -2,6 +2,10 @@ import { IMindsetLlm, mindset, type IMindset, type IMindsetIdentity } from '@wab
 
 @mindset()
 export class MyMindset implements IMindset {
+  async context(): Promise<string> {
+    return ''
+  }
+
   async workflow(): Promise<string> {
     return ``
   }
