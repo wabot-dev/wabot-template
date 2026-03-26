@@ -7,8 +7,8 @@ export class MyChatController {
 
   @cmd()
   onMessage(context: IReceivedMessage) {
-    this.myBot.sendMessage(context.message, (replyMessage) => {
-      context.reply(replyMessage)
+    this.myBot.sendMessage(context.message, async (replyMessage) => {
+      await context.reply(replyMessage)
     })
   }
 }
