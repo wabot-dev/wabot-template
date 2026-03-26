@@ -6,9 +6,9 @@ export class MyChatController {
   constructor(@chatBot(MyMindset) private myBot: ChatBot) {}
 
   @cmd()
-  onMessage(context: IReceivedMessage) {
-    this.myBot.sendMessage(context.message, (replyMessage) => {
-      context.reply(replyMessage)
+  async onMessage(context: IReceivedMessage) {
+    await this.myBot.sendMessage(context.message, async (replyMessage) => {
+      await context.reply(replyMessage)
     })
   }
 }

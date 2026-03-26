@@ -4,7 +4,7 @@
   "main": "./dist/run.js",
   "type": "module",
   "scripts": {
-    "dev": "node --import=@yucacodes/ts --import=./env.mjs ./src/run.ts",
+    "dev": "node --import=@yucacodes/ts ./src/run.ts",
     "build": "tsc --noEmit && tsup-node ./src/run.ts --format esm --clean --no-splitting --sourcemap",
     "start": "node ./dist/run.js",
     "fmt": "prettier --write .",
@@ -15,12 +15,19 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "0.4.1"
+    "@wabot-dev/framework": "^0.5.10"
   },
   "devDependencies": {
-    "@swc/core": "^1.15.8",
+    "@swc/core": "^1.15.21",
     "@types/ws": "^8.18.1",
-    "prettier": "^3.5.3",
-    "tsup": "^8.5.0"
+    "prettier": "^3.8.1",
+    "tsup": "^8.5.1"
+  },
+  "overrides": {
+    "minimatch": "^9.0.7",
+    "picomatch": "^4.0.4",
+    "qs": "^6.15.0",
+    "rollup": "^4.60.0",
+    "socket.io-parser": "^4.2.6"
   }
 }
