@@ -4,13 +4,13 @@
   "main": "./dist/run.js",
   "type": "module",
   "scripts": {
-    "dev": "node --import=@yucacodes/ts ./src/run.ts",
+    "dev": "node --env-file=.env --import=@yucacodes/ts ./src/run.ts",
     "build": "tsc --noEmit && tsup-node ./src/run.ts --format esm --clean --no-splitting --sourcemap",
-    "start": "node ./dist/run.js",
+    "start": "node --env-file=.env ./dist/run.js",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "tsc": "tsc --noEmit",
-    "test:unit": "node --import=@yucacodes/ts  --test './src/**/*.unit.test.ts'"
+    "test:unit": "node --env-file=.env --import=@yucacodes/ts --test './src/**/*.unit.test.ts'"
   },
   "author": "",
   "license": "ISC",
