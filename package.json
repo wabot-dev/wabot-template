@@ -7,8 +7,8 @@
     "dev": "node --import=@yucacodes/ts --env-file=./.env ./src/_run_.ts",
     "dev:watch": "node --import=@yucacodes/ts --env-file=./.env --watch --watch-preserve-output ./src/_run_.ts",
     "cmd:channel": "node --import=@yucacodes/ts ./src/_cmd_.ts",
-    "build": "tsc --noEmit && tsup-node ./src/run.ts --format esm --clean --no-splitting --sourcemap",
-    "start": "node ./dist/run.js",
+    "build": "node ./node_modules/@wabot-dev/framework/dist/build/build.js",
+    "start": "WABOT_BUNDLED=1 node ./dist/entry.js",
     "fmt": "prettier --write .",
     "tsc": "tsc --noEmit",
     "test:unit": "node --import=@yucacodes/ts --env-file=./.env  --test './src/**/*.unit.test.ts'"
@@ -17,7 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "0.9.13"
+    "@wabot-dev/framework": "0.9.15"
   },
   "devDependencies": {
     "@swc/core": "^1.15.8",
