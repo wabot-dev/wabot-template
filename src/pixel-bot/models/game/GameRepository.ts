@@ -1,6 +1,6 @@
 import {
   CrudRepository,
-  memoryExtension,
+  memExtension,
   MemoryRepositoryExtension,
   pgExtension,
   PgRepositoryExtension,
@@ -21,7 +21,7 @@ export class GameRepository
   @queryExtension() declare findLongestInBacklog: (userId: string, limit: number) => Promise<Game[]>
 }
 
-@memoryExtension(GameRepository)
+@memExtension(GameRepository)
 export class GameMemoryQueries
   extends MemoryRepositoryExtension<Game>
   implements IGameRepositoryExtensions
