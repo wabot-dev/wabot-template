@@ -98,7 +98,6 @@ export class PixelMindset implements IMindset {
   async models(): Promise<IMindsetModels> {
     return {
       llm: [
-        { provider: 'openrouter', model: 'openai/gpt-oss-120b' },
         { provider: 'openrouter', model: 'google/gemini-3-flash-preview' },
         { provider: 'openrouter', model: 'qwen/qwen3.6-flash' },
       ],
