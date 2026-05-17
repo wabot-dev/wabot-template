@@ -10,6 +10,7 @@
     "build": "node ./node_modules/@wabot-dev/framework/dist/build/build.js",
     "start": "WABOT_BUNDLED=1 node ./dist/entry.js",
     "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
     "tsc": "tsc --noEmit",
     "test:unit": "node --import=@yucacodes/ts --env-file=./.env  --test './src/**/*.unit.test.ts'"
   },
