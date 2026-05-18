@@ -21,6 +21,7 @@
     "@wabot-dev/framework": "0.9.17"
   },
   "devDependencies": {
+    "tsup": "^8.4.0",
     "@swc/core": "^1.15.8",
     "@types/ws": "^8.18.1"
   }
