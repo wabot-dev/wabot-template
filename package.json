@@ -18,7 +18,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "0.9.26"
+    "@wabot-dev/framework": "0.9.27"
   },
   "devDependencies": {
     "tsup": "^8.4.0",
