@@ -9,6 +9,8 @@
     "emitDecoratorMetadata": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": false,
+    "jsx": "react-jsx",
+    "jsxImportSource": "@wabot-dev/framework/ui",
     "paths": {
       "@/*": ["./src/*"]
     }
