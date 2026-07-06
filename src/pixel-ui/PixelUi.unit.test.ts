@@ -18,7 +18,9 @@ test('server-renders the home page', async () => {
     const page = await harness.get('/')
     assert.equal(page.status, 200)
     assert.match(page.text, /PixelBot/)
-    // The island renders as static SSR HTML in tests.
+    // Islands render as static SSR HTML in tests: the socket ChatBox client and
+    // the @action Echo box.
+    assert.match(page.text, /Message PixelBot/)
     assert.match(page.text, /Say something to PixelBot/)
   } finally {
     await harness.close()
