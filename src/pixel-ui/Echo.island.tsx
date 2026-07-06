@@ -1,4 +1,5 @@
 import { island, useSignal, callAction, actionUrl } from '@wabot-dev/framework/ui'
+import styles from './Echo.module.css'
 
 // Islands must be the default export of a *.island.tsx file so the bundler can
 // give them a stable id and emit a per-island client bundle.
@@ -25,24 +26,17 @@ function Echo() {
   }
 
   return (
-    <form
-      onSubmit={send}
-      style="margin-top: 2rem; display: flex; flex-direction: column; gap: 0.75rem; max-width: 24rem;"
-    >
+    <form onSubmit={send} class={styles.form}>
       <input
         value={draft}
         onInput={(e) => (draft.value = (e.target as HTMLInputElement).value)}
         placeholder="Say something to PixelBot"
-        style="padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px;"
+        class={styles.input}
       />
-      <button
-        type="submit"
-        disabled={busy}
-        style="padding: 0.5rem 0.75rem; border: 0; border-radius: 6px; background: #111; color: #fff; cursor: pointer;"
-      >
+      <button type="submit" disabled={busy} class={styles.button}>
         {busy.value ? 'Sending…' : 'Send'}
       </button>
-      {reply.value ? <p style="margin: 0; color: #111;">{reply}</p> : null}
+      {reply.value ? <p class={styles.reply}>{reply}</p> : null}
     </form>
   )
 }

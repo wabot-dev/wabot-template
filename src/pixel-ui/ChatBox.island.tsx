@@ -1,5 +1,6 @@
 import { island, useSignal, useEffect, useRef } from '@wabot-dev/framework/ui'
 import { io, type Socket } from 'socket.io-client'
+import styles from './ChatBox.module.css'
 
 interface ChatLine {
   from: 'you' | 'pixel'
@@ -49,25 +50,21 @@ function ChatBox() {
   }
 
   return (
-    <div style="margin-top: 1.5rem; border: 1px solid #e5e5e5; border-radius: 10px; overflow: hidden; max-width: 32rem;">
-      <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.9rem; background: #fafafa; border-bottom: 1px solid #eee;">
-        <span
-          style={`width: 8px; height: 8px; border-radius: 50%; background: ${connected.value ? '#22c55e' : '#d4d4d4'};`}
-        />
-        <strong style="font-size: 0.9rem;">PixelBot</strong>
-        <span style="color: #999; font-size: 0.75rem;">
-          {connected.value ? 'connected' : 'connecting…'} · /pixel
-        </span>
+    <div class={styles.box}>
+      <div class={styles.header}>
+        <span class={connected.value ? `${styles.dot} ${styles.dotOn}` : styles.dot} />
+        <strong class={styles.title}>PixelBot</strong>
+        <span class={styles.status}>{connected.value ? 'connected' : 'connecting…'} · /pixel</span>
       </div>
 
-      <div style="height: 15rem; overflow-y: auto; padding: 0.9rem; display: flex; flex-direction: column; gap: 0.5rem; background: #fff;">
+      <div class={styles.messages}>
         {lines.value.length === 0 ? (
-          <p style="color: #999; margin: 0;">Say hi to PixelBot over the socket channel…</p>
+          <p class={styles.empty}>Say hi to PixelBot over the socket channel…</p>
         ) : (
           lines.value.map((line, i) => (
             <div
               key={i}
-              style={`align-self: ${line.from === 'you' ? 'flex-end' : 'flex-start'}; max-width: 80%; padding: 0.4rem 0.7rem; border-radius: 10px; background: ${line.from === 'you' ? '#111' : '#f1f1f1'}; color: ${line.from === 'you' ? '#fff' : '#111'};`}
+              class={`${styles.msg} ${line.from === 'you' ? styles.msgYou : styles.msgPixel}`}
             >
               {line.text}
             </div>
@@ -75,21 +72,14 @@ function ChatBox() {
         )}
       </div>
 
-      <form
-        onSubmit={send}
-        style="display: flex; gap: 0.5rem; padding: 0.7rem; border-top: 1px solid #eee;"
-      >
+      <form onSubmit={send} class={styles.form}>
         <input
           value={draft}
           onInput={(e) => (draft.value = (e.target as HTMLInputElement).value)}
           placeholder="Message PixelBot"
-          style="flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #ccc; border-radius: 6px;"
+          class={styles.input}
         />
-        <button
-          type="submit"
-          disabled={!connected.value}
-          style="padding: 0.5rem 0.9rem; border: 0; border-radius: 6px; background: #111; color: #fff; cursor: pointer;"
-        >
+        <button type="submit" disabled={!connected.value} class={styles.send}>
           Send
         </button>
       </form>
