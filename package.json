@@ -19,11 +19,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "0.9.80"
+    "@wabot-dev/framework": "^1.0.2"
   },
   "devDependencies": {
     "@swc/core": "^1.15.8",
-    "@types/ws": "^8.18.1",
-    "tsup": "^8.5.1"
+    "@types/ws": "^8.18.1"
   }
 }
