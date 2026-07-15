@@ -1,6 +1,6 @@
 {
   "name": "@wabot-dev/template",
-  "version": "2.0.0-beta.0",
+  "version": "1.0.0-beta.0",
   "main": "./dist/run.js",
   "type": "module",
   "scripts": {
