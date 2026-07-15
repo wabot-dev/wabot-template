@@ -9,6 +9,7 @@
     "cmd": "node --import=@yucacodes/ts ./src/_cmd_.ts",
     "build": "node ./node_modules/@wabot-dev/framework/dist/build/build.js",
     "start": "WABOT_BUNDLED=1 node ./dist/entry.js",
+    "skills:sync": "wabot-skills sync",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "tsc": "tsc --noEmit",
