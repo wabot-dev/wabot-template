@@ -9,23 +9,48 @@ This is the official template cloned by the project creator:
 npm create @wabot-dev my-wabot-app
 ```
 
-It ships an empty `src/` wired to the framework runner. You add a mindset, a chat
-controller or a UI controller, and `run()` discovers and starts it — there is no
-registry to update and no bundler to configure.
+It ships a small working bot — **Nova**, a to-do assistant you talk to from your
+terminal — so you can run it first and read it as a reference. Nothing in it needs
+an external service: no WhatsApp, no Telegram, no database. Just a model and your
+terminal.
+
+Prefer a blank slate? Scaffold the **empty** starter instead (the creator asks),
+or delete `src/nova/` — `run()` discovers whatever is in `src/`, so removing it
+leaves a working, empty app.
 
 ## Requirements
 
 - Node.js **22** (see [.nvmrc](.nvmrc))
+- An API key for one AI provider — the included bot uses **OpenRouter**
 - PostgreSQL — **optional**; leave `DATABASE_URL` empty to use the in-memory store
-- An API key for at least one AI provider (only needed to actually talk to a model)
 
 ## Setup
 
 ```bash
 npm install
-cp .env.example .env      # then uncomment one provider key
-npm run dev
+cp .env.example .env      # then uncomment OPENROUTER_API_KEY and set it
+npm run dev               # starts the app
 ```
+
+Then, in a **second terminal**, talk to Nova:
+
+```bash
+npm run cmd
+```
+
+```
+NovaChatController.onMessage > I need to buy milk and water the plants
+[Nova]: I added both items to your list.
+
+NovaChatController.onMessage > mark the milk one as done
+[Nova]: Done! I marked buy milk as complete.
+```
+
+Tasks persist between messages. With no `DATABASE_URL` they land in
+`.wabot/in-memory/task.json`; point it at PostgreSQL and the same code stores them
+there instead.
+
+### Environment
 
 | Variable                                                                   | Description                                                                            |
 | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -55,69 +80,67 @@ npm run dev
 
 ```
 src/
-├── _run_.ts     # entry point — calls run(config)
-├── _cmd_.ts     # entry point for the terminal chat client
-└── css.d.ts     # ambient types for CSS / CSS-module imports
+├── _run_.ts                  # entry point — calls run(config)
+├── _cmd_.ts                  # entry point for the terminal chat client
+├── css.d.ts                  # CSS / CSS-module types, from the framework
+└── nova/                     # the example bot
+    ├── NovaMindset.ts        # @mindset — who Nova is, and which models to use
+    ├── NovaChatController.ts # @chatController — @cmd terminal channel
+    ├── Nova.unit.test.ts     # deterministic tests (no LLM, no database)
+    ├── tools/
+    │   ├── TaskTools.ts      # @tools — what the model can actually call
+    │   └── ClockTools.ts     # @tools — reads the clock on demand
+    └── models/
+        ├── Task.ts           # Entity — a to-do item
+        └── TaskRepository.ts # @repository + @query — storage, no SQL
 ```
 
-Everything else you add under `src/` is **auto-discovered**: mindsets, chat/REST/
-socket/UI controllers, repositories, command and cron handlers. The scanner picks
-up `.ts/.tsx/.js/.jsx` and skips `_run_.ts`, `_cmd_.ts`, `*.d.ts`, test files
+Everything under `src/` is **auto-discovered**: mindsets, chat/REST/socket/UI
+controllers, repositories, command and cron handlers. The scanner picks up
+`.ts/.tsx/.js/.jsx` and skips `_run_.ts`, `_cmd_.ts`, `*.d.ts`, test files
 (`*.unit.test.ts`, `*.integration.test.ts`, …) and any directory whose name starts
 with `__`.
 
-## Building your bot
+## How the example fits together
 
-A **mindset** is who the bot is; a **chat controller** connects it to channels.
+Nova is four small pieces. Read them in this order — it's the shape of every
+Wabot bot.
 
-```ts
-// src/bot/NovaMindset.ts
-import {
-  mindset,
-  type IMindset,
-  type IMindsetDescription,
-  type IMindsetModels,
-} from '@wabot-dev/framework'
+**[`NovaMindset`](src/nova/NovaMindset.ts)** — _who the bot is_. `describe()`
+returns the persona (`identity` + `context`/`skills`/`limits`/`workflow`), which
+the framework assembles into the system prompt; `models()` lists the models to try
+in order. You never write the prompt by hand.
 
-@mindset()
-export class NovaMindset implements IMindset {
-  async describe(): Promise<IMindsetDescription> {
-    return {
-      identity: { name: 'Nova', language: 'english', personality: 'Warm and concise.' },
-      context: 'You help visitors learn about the product.',
-      skills: 'Answer questions and hand off to a human when unsure.',
-      limits: 'Never invent prices. Reply in plain text.',
-      workflow: 'Greet → understand the need → answer → offer next step.',
-    }
-  }
+**[`TaskTools`](src/nova/tools/TaskTools.ts)** and
+[`ClockTools`](src/nova/tools/ClockTools.ts) — _what the model can do_. Every
+method tagged `@description` becomes a tool the LLM can call, and its request class
+is validated first, so a tool body never sees malformed input. Listed on the
+mindset via `@mindset({ tools: [TaskTools, ClockTools] })`.
 
-  async models(): Promise<IMindsetModels> {
-    return { llm: [{ provider: 'openai', model: 'gpt-4.1' }] }
-  }
-}
-```
+`ClockTools` is there for a reason worth copying: `describe()` is **cached**, so a
+date rendered into the persona would freeze at boot and the bot would insist on the
+wrong day forever. Anything that changes over time belongs in a tool the model
+calls when it needs it — the prompt stays static and cacheable.
 
-```ts
-// src/bot/NovaChatController.ts
-import { chatBot, ChatBot, chatController, cmd, type IReceivedMessage } from '@wabot-dev/framework'
-import { NovaMindset } from './NovaMindset'
+**[`Task`](src/nova/models/Task.ts) + [`TaskRepository`](src/nova/models/TaskRepository.ts)**
+— _state_. The `@query()` declares are implemented from their method names, and run
+against whichever adapter is active — in-memory or PostgreSQL. There is no SQL in
+this project.
 
-@chatController()
-export class NovaChatController {
-  constructor(@chatBot(NovaMindset) private nova: ChatBot) {}
+**[`NovaChatController`](src/nova/NovaChatController.ts)** — _how people reach it_.
+`@cmd()` is the local terminal channel. Adding `@telegram()`, `@wasender()` or
+`@socket({ namespace })` handlers alongside it serves the same bot elsewhere —
+that's the only part that pulls in an outside service.
 
-  @cmd() // talk to it with `npm run cmd`
-  async onCmd(ctx: IReceivedMessage) {
-    await this.nova.sendMessage(ctx.message, async (reply) => {
-      await ctx.reply(reply)
-    })
-  }
-}
-```
+**[`Nova.unit.test.ts`](src/nova/Nova.unit.test.ts)** — `npm run test:unit` runs
+the real tools and validation against a scripted mock model, so it needs no API key
+and no database.
 
-Add `@wasender()`, `@telegram()` or `@socket({ namespace })` handlers to serve the
-same bot on other channels. Give the mindset **tools** (`@mindset({ tools: [...] })`)
-to let the model call your code, and model state with `Entity` + `CrudRepository`.
+### Make it yours
+
+Rename the folder and rewrite `describe()` — that alone gives you a different bot.
+Then swap `TaskTools` for tools that call your code, and model your own state with
+`Entity` + `CrudRepository`. To start from nothing instead, delete `src/nova/`.
 
 ## Web UI
 
