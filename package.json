@@ -20,7 +20,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@wabot-dev/framework": "^1.0.2"
+    "@wabot-dev/framework": "^1.0.3"
   },
   "devDependencies": {
     "@swc/core": "^1.15.8",
